@@ -44,6 +44,8 @@ def _create_func_parser(func):
     returned = reqparse.RequestParser()
     arg_names = []
     for arg_name, annotation in inspect.getfullargspec(func).annotations.items():
+        if isinstance(annotation, type):
+            annotation = ARG(type=annotation)
         returned.add_argument(arg_name, **annotation.options)
         arg_names.append(arg_name)
     return returned, arg_names
