@@ -1,4 +1,4 @@
-from .simple_api import api, ARG
+from . import simple_api
 
 class SimpleAPI(object):
 
@@ -7,4 +7,4 @@ class SimpleAPI(object):
         self._blueprint = blueprint
 
     def include(self, func):
-        return api(self._blueprint)(func)
+        return simple_api.api(self._blueprint)(func)

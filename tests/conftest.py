@@ -5,7 +5,7 @@ import uuid
 import requests
 from flask import Flask
 from flask.ext.loopback import FlaskLoopback
-from flask.ext.simple_api import api, ARG
+from flask.ext.simple_api import SimpleAPI
 
 import pytest
 
@@ -31,23 +31,32 @@ def webapp(request):
     app.config['PROPAGATE_EXCEPTIONS'] = True
     app.config['DEBUG'] = True
 
-    @api(app)
+    api = SimpleAPI(app)
+
+    @api.include
     def api_no_args():
         return 'ok no args'
 
-    @api(app)
-    def sum(a: ARG(type=int), b: ARG(type=int), c: ARG(type=int, default=3)):
+    @api.include
+    def sum(a: int, b: int, c: int=3):
         return a + b + c
 
-    @api(app)
+    @api.include
     def mul(a: int, b: int): # use direct types
         return a * b
 
-    @api(app)
+    @api.include
     @_decorator
     def div(a: int, b: int): # use decorator
         return a / b
 
+    @api.include
+    def echo(list_value: list, dict_value: dict):
+        return [list_value, dict_value]
+
+    @api.include
+    def default_to_none(str_value: str=None):
+        return 'Got {!r}'.format(str_value)
 
 
     returned = Webapp(app)

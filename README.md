@@ -33,13 +33,11 @@ curlish -X POST http://your.server.name/do_something -J param1:=2 -J param2=hell
 {"result": "String is hello, and number is 2"}
 ```
 
-You can also pass any arguments that are valid for Flask-Restful's `reqparse` parser through the `ARG` helper:
+Optional and default values:
 
 ```python
-from flask.ext.simple_api import ARG
-
 @api.include
-def do_something_else(value: ARG(type=int, default=6, location='json')):
+def do_something_else(value: int=2, value: str=None):
     ...
 ```
 
