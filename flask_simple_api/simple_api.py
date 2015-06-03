@@ -36,6 +36,11 @@ class ARG(object):
 
 
 def _create_func_parser(func):
+    while True:
+        wrapped = getattr(func, '__wrapped__', None)
+        if not wrapped:
+            break
+        func = wrapped
     returned = reqparse.RequestParser()
     arg_names = []
     for arg_name, annotation in inspect.getfullargspec(func).annotations.items():
