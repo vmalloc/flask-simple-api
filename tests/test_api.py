@@ -30,3 +30,8 @@ def test_missing_args(call_api):
     assert caught.value.response.status_code == 400
 
 
+def test_direct_types(call_api):
+    assert call_api('mul', a=2, b=3) == 6
+
+def test_wrapping(call_api):
+    assert call_api('div', a=6, b=2) == 3

@@ -1,3 +1,4 @@
+import functools
 import json
 import uuid
 
@@ -17,6 +18,12 @@ def call_api(webapp):
         return resp['result']
     return callable
 
+def _decorator(func):
+
+    @functools.wraps(func)
+    def new_func(*args, **kwargs):
+        return func(*args, **kwargs)
+    return new_func
 
 @pytest.fixture
 def webapp(request):
@@ -31,6 +38,17 @@ def webapp(request):
     @api(app)
     def sum(a: ARG(type=int), b: ARG(type=int), c: ARG(type=int, default=3)):
         return a + b + c
+
+    @api(app)
+    def mul(a: int, b: int): # use direct types
+        return a * b
+
+    @api(app)
+    @_decorator
+    def div(a: int, b: int): # use decorator
+        return a / b
+
+
 
     returned = Webapp(app)
     returned.activate()
