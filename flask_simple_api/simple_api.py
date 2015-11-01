@@ -75,7 +75,7 @@ class Parser(object):
                 value = self.defaults.get(arg_name, NOTHING)
             elif not isinstance(value, expected_type):
                 error_abort(
-                    'Value for parameter {!r} is of unexpected type'.format(arg_name))
+                    'Value for parameter {!r} is of unexpected type (got {!r}, expected {!r})'.format(arg_name, value, expected_type))
 
             if value is NOTHING:
                 error_abort('Parameter is missing: {!r}'.format(arg_name))
