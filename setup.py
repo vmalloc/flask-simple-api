@@ -8,6 +8,7 @@ with open(os.path.join(os.path.dirname(__file__), "flask_simple_api", "__version
 _INSTALL_REQUIRES = [
     "Flask",
     "Flask-Restful",
+    "Logbook",
     "sentinels",
 ]
 

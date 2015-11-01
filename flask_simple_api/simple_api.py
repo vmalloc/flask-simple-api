@@ -1,9 +1,23 @@
 import functools
 import inspect
 
-from flask import abort, jsonify, request
+import logbook
+
+from flask import jsonify, request
+from werkzeug.exceptions import HTTPException
 from flask.ext.restful import reqparse
 from sentinels import NOTHING
+
+
+_logger = logbook.Logger(__name__)
+
+
+def error_response(message, code=400):
+    _logger.error('Error {code} when processing response {r.method} {r.path}: {message}',
+        r=request, message=message, code=code)
+    response = jsonify({'message': message})
+    response.status_code = code
+    raise HTTPException(response=response)
 
 
 def api(app_or_blueprint, name=None):
@@ -26,6 +40,7 @@ def api(app_or_blueprint, name=None):
         return new_func
     return decorator
 
+
 class Parser(object):
 
     def __init__(self, func):
@@ -41,7 +56,8 @@ class Parser(object):
 
         argspec = inspect.getfullargspec(func)
 
-        defaults = dict(zip(reversed(argspec.args), reversed(argspec.defaults or ())))
+        defaults = dict(zip(reversed(argspec.args),
+                            reversed(argspec.defaults or ())))
 
         for (arg_name, expected_type) in argspec.annotations.items():
             self.types[arg_name] = expected_type
@@ -58,9 +74,10 @@ class Parser(object):
             if value is NOTHING:
                 value = self.defaults.get(arg_name, NOTHING)
             elif not isinstance(value, expected_type):
-                abort(400)
+                error_response(
+                    'Value for parameter {!r} is of unexpected type'.format(arg_name))
 
             if value is NOTHING:
-                abort(400)
+                error_response('Parameter is missing: {!r}'.format(arg_name))
             returned[arg_name] = value
         return returned
