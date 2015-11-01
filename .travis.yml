@@ -1,10 +1,18 @@
 language: python
 python:
-  - "3.3"
-  - "3.4"
-  - "3.5"
+- '3.3'
+- '3.4'
+- '3.5'
 install:
-  - pip install -e .
-  - pip install -r test_requirements.txt
-script: 
-  - py.test
+- pip install -e .
+- pip install -r test_requirements.txt
+script:
+- py.test
+deploy:
+  provider: pypi
+  user: vmalloc
+  password:
+    secure: ov7BHxcyXwZ9JDFIaKaPfW24l63k+7Ky5+p9RDOIhTeYuqZZpj29aN0naZx4Cg0hC+pezD1VgkfZ10as/Z4gyd7bjkGo9cRkwRXq8ioDfGyJ48ruSO0ZaU5P+6wekrKOGfCQIYl8GOHfHzaBdki1H1gvIRyQgARQasXepaK4chaAcy9HlPPzu0pqEXhAN9YKfqdnPAoBTz+YvQFsasXo7bWzCvfYox39XxCSZRH7OFGW1qV45wQqJMr4cYubw9uNStE0MaW9iZHXNYUKd4qr32rbei9h1Sn/InttoGz+xTxPmYg66jC14reGKbJAcLif62Tyr4ZFV0fHT2t4GBvnt9FZe3E4HVjsZ4hkVyh4rmX3tdK2HPfGj2ZT66pzj41tXjzxA1VlT/SrHmexG1iLoRUe2sipwZV7m4v+LxKrW0hWirtGDpTfMYrfy7aXxVK5dvwr7PkccZH9sYtsCYUFHl583+HuP9VeetJ68t58IopDsyc6r3UQXv5BXHE6pJNn+r2wGJfZsxZ7Q0irJkH1UaubH6GxIRSEznyp3K3SXpb5+70ncKvJiTLT2ixf+jDbw9hUtqUFO+Wxt5PgSmkpdIEEPfhXliKxt2cTTxzhFCdCpItt4LjcFa+Qqu6qLp9/V2xjmWdNCYqnM715wo3NZtwJ40OYz5HLDJeefuo1J7o=
+  on:
+    tags: true
+    repo: vmalloc/flask-simple-api
