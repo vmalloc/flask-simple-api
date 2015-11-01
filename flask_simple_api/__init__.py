@@ -1,4 +1,5 @@
 from . import simple_api
+from .simple_api import error_abort
 
 class SimpleAPI(object):
 

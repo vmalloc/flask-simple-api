@@ -12,7 +12,7 @@ from sentinels import NOTHING
 _logger = logbook.Logger(__name__)
 
 
-def error_response(message, code=400):
+def error_abort(message, code=400):
     _logger.error('Error {code} when processing response {r.method} {r.path}: {message}',
         r=request, message=message, code=code)
     response = jsonify({'message': message})
@@ -74,10 +74,10 @@ class Parser(object):
             if value is NOTHING:
                 value = self.defaults.get(arg_name, NOTHING)
             elif not isinstance(value, expected_type):
-                error_response(
+                error_abort(
                     'Value for parameter {!r} is of unexpected type'.format(arg_name))
 
             if value is NOTHING:
-                error_response('Parameter is missing: {!r}'.format(arg_name))
+                error_abort('Parameter is missing: {!r}'.format(arg_name))
             returned[arg_name] = value
         return returned
