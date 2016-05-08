@@ -1,13 +1,16 @@
 import functools
+import gzip
 import inspect
+import json
+
+from io import TextIOWrapper
 
 import logbook
 
 from flask import jsonify, request
-from werkzeug.exceptions import HTTPException
 from flask.ext.restful import reqparse
 from sentinels import NOTHING
-
+from werkzeug.exceptions import HTTPException
 
 _logger = logbook.Logger(__name__)
 
@@ -66,7 +69,7 @@ class Parser(object):
                 self.defaults[arg_name] = default
 
     def parse_kwargs(self):
-        json = request.get_json(silent=True)
+        json = self._get_json()
         if json is None:
             error_abort('Request body does not contain a JSON document')
         returned = {}
@@ -83,3 +86,20 @@ class Parser(object):
                 error_abort('Parameter is missing: {!r}'.format(arg_name))
             returned[arg_name] = value
         return returned
+
+    def _get_json(self):
+        if not self._is_json_request():
+            return None
+
+        if request.headers.get('content-encoding') != 'gzip':
+            return request.get_json(silent=True)
+
+        with gzip.GzipFile(fileobj=request.stream, mode='r') as f, TextIOWrapper(f) as w:
+            try:
+                return json.load(w)
+            except (ValueError,):
+                error_abort('Invalid JSON content')
+
+    def _is_json_request(self):
+        mt = request.mimetype
+        return mt == 'application/json' or (mt.startswith('application/') and mt.endswith('+json'))

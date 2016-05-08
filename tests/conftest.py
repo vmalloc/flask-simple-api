@@ -2,12 +2,18 @@ import functools
 import json
 import uuid
 
+import logbook
 import requests
+
+import pytest
 from flask import Flask
 from flask.ext.loopback import FlaskLoopback
 from flask.ext.simple_api import SimpleAPI
 
-import pytest
+
+@pytest.fixture(scope='session', autouse=True)
+def setup_logging():
+    logbook.StderrHandler(level=logbook.DEBUG).push_application()
 
 
 @pytest.fixture
