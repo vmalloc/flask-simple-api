@@ -1,8 +1,6 @@
 import copy
-import json
 
-from flask import Flask
-from requests import HTTPError
+from requests import HTTPError, codes
 
 import pytest
 
@@ -47,3 +45,7 @@ def test_literals(call_api):
 def test_default_to_none(call_api):
     assert call_api('default_to_none', str_value='s') == "Got 's'"
     assert call_api('default_to_none') == "Got None"
+
+def test_no_json_is_bad_request(webapp):
+    resp = webapp.post('/default_to_none', raw_response=True)
+    assert resp.status_code == codes.bad_request
