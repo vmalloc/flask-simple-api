@@ -66,7 +66,9 @@ class Parser(object):
                 self.defaults[arg_name] = default
 
     def parse_kwargs(self):
-        json = request.json
+        json = request.get_json(silent=True)
+        if json is None:
+            error_abort('Request body does not contain a JSON document')
         returned = {}
 
         for arg_name, expected_type in self.types.items():
