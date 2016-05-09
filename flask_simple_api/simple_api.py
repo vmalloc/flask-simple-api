@@ -3,7 +3,7 @@ import gzip
 import inspect
 import json
 
-from io import TextIOWrapper
+from io import TextIOWrapper, BytesIO
 
 import logbook
 
@@ -94,7 +94,9 @@ class Parser(object):
         if request.headers.get('content-encoding') != 'gzip':
             return request.get_json(silent=True)
 
-        with gzip.GzipFile(fileobj=request.stream, mode='r') as f, TextIOWrapper(f) as w:
+        s = BytesIO(request.data)
+
+        with gzip.GzipFile(fileobj=s, mode='r') as f, TextIOWrapper(f) as w:
             try:
                 return json.load(w)
             except (ValueError,):
