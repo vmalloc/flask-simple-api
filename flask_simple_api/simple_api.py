@@ -15,10 +15,13 @@ from werkzeug.exceptions import HTTPException
 _logger = logbook.Logger(__name__)
 
 
-def error_abort(message, code=400):
+def error_abort(message, code=400, extra=None):
     _logger.error('Error {code} when processing response {r.method} {r.path}: {message}',
         r=request, message=message, code=code)
-    response = jsonify({'message': message})
+    data = {'message': message}
+    if extra:
+        data.update(extra)
+    response = jsonify(data)
     response.status_code = code
     raise HTTPException(response=response)
 
