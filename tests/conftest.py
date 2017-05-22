@@ -7,8 +7,8 @@ import requests
 
 import pytest
 from flask import Flask
-from flask.ext.loopback import FlaskLoopback
-from flask.ext.simple_api import SimpleAPI
+from flask_loopback import FlaskLoopback
+from flask_simple_api import SimpleAPI
 
 
 @pytest.fixture(scope='session', autouse=True)

@@ -13,7 +13,7 @@ Flask-Simple-API is a small utility package to create rapid api endpoints using 
 
 ```python
 
-from flask.ext.simple_api import SimpleAPI
+from flask_simple_api import SimpleAPI
 
 app = Flask(__name__)
 

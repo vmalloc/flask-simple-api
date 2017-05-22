@@ -8,7 +8,7 @@ from io import TextIOWrapper, BytesIO
 import logbook
 
 from flask import jsonify, request
-from flask.ext.restful import reqparse
+from flask_restful import reqparse
 from sentinels import NOTHING
 from werkzeug.exceptions import HTTPException
 
