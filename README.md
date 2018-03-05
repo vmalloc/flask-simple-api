@@ -2,9 +2,9 @@
 ![Build Status] (https://secure.travis-ci.org/vmalloc/flask-simple-api.png )
 
 
-![Downloads] (https://pypip.in/d/flask-simple-api/badge.png )
+![Downloads] (https://img.shields.io/pypi/dm/flask-simple-api.svg )
 
-![Version] (https://pypip.in/v/flask-simple-api/badge.png )
+![Version] (https://img.shields.io/pypi/v/flask-simple-api.svg )
 
 Overview
 ========
